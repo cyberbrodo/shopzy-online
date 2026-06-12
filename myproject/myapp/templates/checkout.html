@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Checkout</title>
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+</head>
+<body>
+
+<form method="POST" action="{% url 'place_order' %}">
+{% csrf_token %}
+
+<div class="checkout-page">
+
+<div class="left-box">
+
+<div class="card">
+<h3>Customer Details</h3>
+
+<div class="input-row">
+<input type="text" name="name" placeholder="Name *" required>
+<input type="text" name="phone" placeholder="Mobile Number *" required>
+</div>
+</div>
+
+<div class="card">
+<h3>Address</h3>
+
+<textarea name="address" placeholder="Address *" required></textarea>
+
+<div class="input-row">
+<input type="text" name="pincode" placeholder="Pin Code *" required>
+<input type="text" name="city" placeholder="City *" required>
+<input type="text" name="state" placeholder="State *" required>
+</div>
+</div>
+
+<div class="card">
+<h3>Additional Notes</h3>
+<select required>
+<option>I agree terms and conditions</option>
+</select>
+</div>
+
+<div class="card">
+<h3>Payment</h3>
+
+
+
+<label>
+    <a href="payment.html">
+<input type="radio" name="payment_method" value="Online">
+Online Payment
+    </a>
+</label>
+</div>
+
+</div>
+
+<div class="right-box">
+
+<div class="card coupon">
+<h3>Apply Coupon <span>Select</span></h3>
+</div>
+
+<h3>Items ({{ cart_items|length }})</h3>
+
+{% for item in cart_items %}
+<div class="cart-item">
+
+<img src="{{ item.product.image.url }}">
+
+<div class="item-info">
+<h4>{{ item.product.name }}</h4>
+<p>Qty: {{ item.quantity }}</p>
+</div>
+
+<h4>₹ {{ item.get_total_price }}</h4>
+
+</div>
+{% endfor %}
+
+<div class="bill-box">
+<h3>Bill Details</h3>
+<p>Sub Total <span>₹ {{ total }}</span></p>
+<p>Tax <span>₹ 0</span></p>
+<hr>
+<h3>Payable <span>₹ {{ total }}</span></h3>
+</div>
+
+
+
+<button type="submit" class="pay-btn">Place Order</button>
+
+</div>
+
+</div>
+
+</form>
+
+</body>
+</html>
