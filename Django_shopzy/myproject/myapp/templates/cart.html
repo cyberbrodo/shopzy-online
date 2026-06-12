@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cart</title>
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+</head>
+
+<body>
+
+<div class="checkout-page">
+
+<div class="left-box">
+
+
+
+<div class="card">
+<h3>Create User</h3>
+<div class="input-row">
+<input type="text" placeholder="Name *">
+<input type="text" placeholder="Mobile Number *">
+</div>
+</div>
+
+<div class="card">
+<h3>Address</h3>
+<p>Please add your address</p>
+
+<div class="input-row">
+<input type="text" placeholder="Name *">
+<input type="text" placeholder="Mobile Number *">
+</div>
+
+<textarea placeholder="Address *"></textarea>
+
+<div class="input-row">
+<input type="text" placeholder="Pin Code *">
+<input type="text" placeholder="City *">
+<input type="text" placeholder="State *">
+</div>
+</div>
+
+</div>
+
+<div class="right-box">
+
+<div class="card coupon">
+<h3>Apply Coupon Code <span>Select</span></h3>
+</div>
+
+<h3>Items ({{ cart_items|length }})</h3>
+
+{% for item in cart_items %}
+
+<div class="cart-item">
+
+<img src="{{ item.product.image.url }}">
+
+<div class="item-info">
+<h4>{{ item.product.name }}</h4>
+<a href="{% url 'remove_from_cart' item.id %}">Remove</a>
+</div>
+
+<h4>₹ {{ item.product.price }}</h4>
+
+<div class="qty">
+<a href="{% url 'decrease_quantity' item.id %}">−</a>
+<span>{{ item.quantity }}</span>
+<a href="{% url 'increase_quantity' item.id %}">+</a>
+</div>
+
+</div>
+
+{% empty %}
+<h3>Your cart is empty</h3>
+{% endfor %}
+
+<div class="bill-box">
+<h3>Bill Details</h3>
+<p>Sub Total <span>₹ {{ total }}</span></p>
+<p>Tax <span>₹ 0</span></p>
+<hr>
+<h3>Payable <span>₹ {{ total }}</span></h3>
+</div>
+
+
+
+<a href="{% url 'checkout' %}">
+<button class="continue-btn">Continue</button>
+</a>
+
+</div>
+
+</div>
+
+</body>
+</html>
