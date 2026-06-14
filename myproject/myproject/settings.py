@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -115,12 +116,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+import os
+
 STATIC_URL = 'static/'
-STATICFILES_DIRS=[
-    BASE_DIR/'static'
-]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Razorpay
 
-RAZORPAY_KEY_ID = "rzp_test_ABC123XYZ"
-RAZORPAY_KEY_SECRET = "abcd1234secret"
+RAZORPAY_KEY_ID = ""
+RAZORPAY_KEY_SECRET = ""

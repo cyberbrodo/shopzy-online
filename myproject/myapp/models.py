@@ -23,8 +23,9 @@ class Product(models.Model):
             slug = models.SlugField(unique=True)
             image = models.ImageField(upload_to='products')
             description = models.TextField()
-            price = models.IntegerField()
-            offer_price = models.IntegerField(null=True, blank=True)
+            price = models.IntegerField(null=True, blank=True)
+
+            offer_price = models.IntegerField()
             stock = models.IntegerField(default=1)
             is_offer = models.BooleanField(default=False)
 
