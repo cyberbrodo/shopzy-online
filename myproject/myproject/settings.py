@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-8oic$-gv@9&%wxp_c2#aje1qs^03dohal=go%zy6juy6tq(a-w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "shopzy-online.onrender.com",
+    "127.0.0.1",
+    "localhost",
+]
 
 
 # Application definition
