@@ -128,5 +128,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Razorpay
 
-RAZORPAY_KEY_ID = ""
-RAZORPAY_KEY_SECRET = ""
+RAZORPAY_KEY_ID = "rzp_test_T1XIOtplYyyVXB"
+RAZORPAY_KEY_SECRET = "mUrZpHybX4S2Rkp5Pj3smFjQ"

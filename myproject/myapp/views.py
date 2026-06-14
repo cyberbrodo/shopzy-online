@@ -90,6 +90,9 @@ def decrease_quantity(request,id):
     return redirect('cart')
 
 
+import razorpay
+from django.conf import settings
+
 def checkout(request):
     cart_items = Cart.objects.all()
 
@@ -97,9 +100,24 @@ def checkout(request):
     for item in cart_items:
         total += item.get_total_price()
 
-    return render(request, 'checkout.html', {
-        'cart_items': cart_items,
-        'total': total
+    amount = total * 100
+
+    client = razorpay.Client(
+        auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+    )
+
+    payment = client.order.create({
+        "amount": amount,
+        "currency": "INR",
+        "payment_capture": 1
+    })
+
+    return render(request, "checkout.html", {
+        "cart_items": cart_items,
+        "total": total,
+        "amount": amount,
+        "payment": payment,
+        "razorpay_key": settings.RAZORPAY_KEY_ID,
     })
 
 
@@ -138,28 +156,3 @@ def place_order(request):
 import razorpay
 from django.conf import settings
 from django.shortcuts import render
-
-def checkout(request):
-
-    client = razorpay.Client(
-        auth=(settings.RAZORPAY_KEY_ID,
-              settings.RAZORPAY_KEY_SECRET)
-    )
-
-    amount = 1099 * 100   # paisa
-
-    payment = client.order.create({
-        "amount": amount,
-        "currency": "INR",
-        "payment_capture": 1
-    })
-
-    return render(request,'payment.html',{
-        'payment': payment,
-        'amount': amount
-    })
-
-from django.shortcuts import render
-
-def payment(request):
-    return render(request, 'payment.html')

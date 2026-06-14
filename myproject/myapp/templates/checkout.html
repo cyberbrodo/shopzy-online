@@ -4,10 +4,43 @@
 <head>
 <title>Checkout</title>
 <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+
 </head>
 <body>
 
-<form method="POST" action="{% url 'place_order' %}">
+<!-- NAVBAR -->
+<nav class="navbar">
+<div class="container-fluid px-4 d-flex justify-content-between align-items-center">
+
+<a class="navbar-brand d-flex align-items-center gap-2 m-0" href="{% url 'home' %}">
+<img src="{% static 'images/shopzy.png' %}" class="logo" alt="Shopzy Logo">
+</a>
+
+<div class="right-side d-flex align-items-center gap-4">
+
+<div class="search-wrapper">
+<input type="text" placeholder="Search..." id="searchInput">
+<i class="fa-solid fa-magnifying-glass nav-icon" id="searchBtn"></i>
+</div>
+
+<a href="#">
+<i class="fa-regular fa-user nav-icon"></i>
+</a>
+
+<a href="{% url 'cart' %}">
+<i class="fa-solid fa-cart-shopping nav-icon"></i>
+</a>
+
+<a href="https://wa.me/919037078132" target="_blank">
+<i class="fa-brands fa-whatsapp nav-icon whatsapp"></i>
+</a>
+
+</div>
+</div>
+</nav>
+
+
+<form method="POST" action="{% url 'place_order' %}" id="checkoutForm">
 {% csrf_token %}
 
 <div class="checkout-page">
@@ -40,19 +73,6 @@
 <select required>
 <option>I agree terms and conditions</option>
 </select>
-</div>
-
-<div class="card">
-<h3>Payment</h3>
-
-
-
-<label>
-    <a href="payment.html">
-<input type="radio" name="payment_method" value="Online">
-Online Payment
-    </a>
-</label>
 </div>
 
 </div>
@@ -88,15 +108,84 @@ Online Payment
 <h3>Payable <span>₹ {{ total }}</span></h3>
 </div>
 
-
-
-<button type="submit" class="pay-btn">Place Order</button>
+<button type="button" id="pay-btn" class="pay-btn">Place Order</button>
 
 </div>
-
 </div>
-
 </form>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="footer-container">
+
+<div class="footer-logo">
+<img src="{% static 'images/shopzy.png' %}" alt="Shopzy Logo">
+<h2>SHOPZY ONLINE</h2>
+<p>Trending Gadgets & Premium Accessories</p>
+</div>
+
+<div class="footer-links">
+<h4>Quick Links</h4>
+<a href="{% url 'home' %}">Home</a>
+<a href="#">About Us</a>
+<a href="#">Payment Policy</a>
+<a href="#">Privacy Policy</a>
+<a href="#">Return & Refund Policy</a>
+<a href="#">Shipping Policy</a>
+<a href="#">Terms & Conditions</a>
+<a href="#">Contact Us</a>
+</div>
+
+<div class="footer-contact">
+<h4>Get In Touch</h4>
+<p>Email: shopzyonlin.in@gmail.com</p>
+<p>Phone: +91 9037078132</p>
+<p>Address: Angadipuram, Vazhippara Malappuram, Kerala - 679321</p>
+
+<div class="social-icons">
+<a href="#"><i class="fa-brands fa-instagram"></i></a>
+<a href="https://wa.me/919037078132" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<a href="#"><i class="fa-brands fa-facebook"></i></a>
+</div>
+
+</div>
+</div>
+
+<hr>
+
+<p class="copyright">
+Copyright © by Shopzyonline 2026. All rights reserved.
+</p>
+</footer>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+var options = {
+    "key": "rzp_test_T1XIOtplYyyVXB",
+    "amount": "{{ amount }}",
+    "currency": "INR",
+    "order_id": "{{ payment.id }}",
+    "name": "Shopzy Online",
+    "description": "Order Payment",
+
+    "handler": function (response){
+        document.getElementById("checkoutForm").submit();
+    },
+
+    "theme": {
+        "color": "#0B3DDB"
+    }
+};
+
+var rzp = new Razorpay(options);
+
+document.getElementById("pay-btn").onclick = function(e){
+    rzp.open();
+    e.preventDefault();
+}
+</script>
 
 </body>
 </html>

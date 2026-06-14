@@ -38,5 +38,5 @@ path('decrease/<int:id>/',views.decrease_quantity,name='decrease_quantity'),
 path('checkout/', views.checkout, name='checkout'),
 path('place-order/', views.place_order, name='place_order'),
 path('checkout/', views.checkout, name='checkout'),
-path('payment/', views.payment, name='payment'),
+# path('payment/', views.payment, name='payment'),
 ]

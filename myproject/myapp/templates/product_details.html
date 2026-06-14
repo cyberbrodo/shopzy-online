@@ -2,27 +2,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>details</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>{{ product.name }}</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/pro_details.css' %}">
 </head>
+
 <body>
 
+<nav class="navbar">
+<div class="container-fluid px-4 d-flex justify-content-between align-items-center">
 
-<link rel="stylesheet" href="{% static 'css/pro_details.css' %}">
+<a class="navbar-brand d-flex align-items-center gap-2 m-0" href="{% url 'home' %}">
+<img src="{% static 'images/shopzy.png' %}" class="logo" alt="Shopzy Logo">
+</a>
+
+<div class="right-side d-flex align-items-center gap-4">
+<a href="{% url 'home' %}"><i class="fa-solid fa-magnifying-glass nav-icon"></i></a>
+<a href="#"><i class="fa-regular fa-user nav-icon"></i></a>
+<a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping nav-icon"></i></a>
+<a href="https://wa.me/919037078132" target="_blank">
+<i class="fa-brands fa-whatsapp nav-icon whatsapp"></i>
+</a>
+</div>
+
+</div>
+</nav>
 
 <div class="details-page">
 
 <div class="left-images">
-
+<img src="{{ product.image.url }}" onclick="changeImage(this.src)">
 {% for img in product.images.all %}
 <img src="{{ img.image.url }}" onclick="changeImage(this.src)">
 {% endfor %}
-
 </div>
 
 <div class="main-image">
-<img id="mainProductImage" src="{{ product.image.url }}">
+<img id="mainProductImage" src="{{ product.image.url }}" alt="{{ product.name }}">
 </div>
 
 <div class="product-info">
@@ -34,9 +55,8 @@
 
 {% if product.offer_price %}
 <span class="old-price">₹ {{ product.offer_price }}</span>
+<span class="discount">Offer</span>
 {% endif %}
-
-<span class="discount">21%</span>
 </div>
 
 <a href="{% url 'add_to_cart' product.id %}">
@@ -45,9 +65,9 @@
 
 <hr>
 
-<p class="description">
+<div class="description">
 {{ product.description|linebreaks }}
-</p>
+</div>
 
 </div>
 
@@ -57,12 +77,17 @@
 <h2>Reviews and Ratings</h2>
 <div class="stars">★★★★★</div>
 <h3>No Customer Reviews</h3>
+<p>Share your thoughts with other customers</p>
 <button>Write A Review</button>
 </div>
 
+<footer class="footer">
+<p>Copyright © Shopzy Online 2026. All rights reserved.</p>
+</footer>
+
 <script>
 function changeImage(src){
-    document.getElementById("mainProductImage").src = src;
+document.getElementById("mainProductImage").src = src;
 }
 </script>
 
