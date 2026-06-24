@@ -132,8 +132,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Razorpay
 
-RAZORPAY_KEY_ID = "rzp_test_T1XIOtplYyyVXB"
-RAZORPAY_KEY_SECRET = "mUrZpHybX4S2Rkp5Pj3smFjQ"
+RAZORPAY_KEY_ID = "rzp_live_T5Ys6WeltvkvfV"
+RAZORPAY_KEY_SECRET = "aOomfkVmS2em9vvXfJXS4Hr1"
 
 
 
