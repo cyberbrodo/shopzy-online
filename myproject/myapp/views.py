@@ -4,6 +4,7 @@ import razorpay
 from .models import Product, Category, Banner, Order, Cart, ProductImage, Review
 from .models import Order, OrderItem
 from myapp.models import Product
+from django.contrib.auth import login, logout
 
 
 
@@ -243,19 +244,35 @@ def clear_cart(request):
 import random
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth import login
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.conf import settings
+# from django.conf import logout
 
+
+import random
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth import login
 
 def send_otp(request):
     if request.method == "POST":
-        email = request.POST.get("email")
+        email = request.POST.get('email')
         otp = str(random.randint(100000, 999999))
 
-        request.session["login_email"] = email
-        request.session["login_otp"] = otp
+        request.session['otp'] = otp
+        request.session['email'] = email
 
-        print("SHOPZY LOGIN OTP:", otp)
+        send_mail(
+            "Your Shopzy OTP Code",
+            f"Your OTP is {otp}",
+            "quickjobs073@gmail.com",
+            [email],
+        )
 
         return redirect("verify_otp")
 
@@ -273,8 +290,8 @@ def verify_otp(request):
             request.POST.get("otp6", "")
         )
 
-        saved_otp = request.session.get("login_otp")
-        email = request.session.get("login_email")
+        saved_otp = request.session.get("otp")
+        email = request.session.get("email")
 
         if entered_otp == saved_otp and email:
             username = email.split("@")[0]
@@ -286,10 +303,9 @@ def verify_otp(request):
 
             login(request, user)
 
-            request.session.pop("login_email", None)
-            request.session.pop("login_otp", None)
+            request.session.pop("otp", None)
+            request.session.pop("email", None)
 
-            messages.success(request, "Login successful")
             return redirect("home")
 
         messages.error(request, "Invalid OTP")
@@ -297,12 +313,6 @@ def verify_otp(request):
 
     return render(request, "verify_otp.html")
 
-
-def profile(request):
-    if not request.user.is_authenticated:
-        return redirect("send_otp")
-
-    return render(request, "profile.html")
 
 
 def logout_user(request):
@@ -313,7 +323,8 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='send_otp')
 def profile(request):
-    return render(request, 'profile.html')
+    orders = Order.objects.filter(user=request.user).order_by("-id")
+    return render(request, 'profile.html', {"orders": orders})
 
 def my_orders(request):
     if not request.user.is_authenticated:

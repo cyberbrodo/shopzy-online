@@ -34,10 +34,13 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('place-order/', views.place_order, name='place_order'),
     # path('payment-success/', views.payment_success, name='payment_success'),
-path("login/", views.send_otp, name="send_otp"),
+
 path("verify-otp/", views.verify_otp, name="verify_otp"),
 path("ho/", views.verify_otp, name="index"),
 path("profile/", views.profile, name="profile"),
 path("logout/", views.logout_user, name="logout"),
 path('my-orders/', views.my_orders, name='my_orders'),
+path("login/", views.send_otp, name="send_otp"),
+path("verify-otp/", views.verify_otp, name="verify_otp"),
+path("profile/", views.profile, name="profile"),
 ]
