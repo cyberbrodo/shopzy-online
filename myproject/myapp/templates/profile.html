@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+
+<div class="profile-page">
+<div class="profile-card">
+
+<div class="avatar">
+{{ request.user.username|first|upper }}
+</div>
+
+<h2>{{ request.user.username }}</h2>
+<p>{{ request.user.email }}</p>
+
+<div class="profile-menu">
+
+<a href="{% url 'my_orders' %}">
+    
+<i class="fa-solid fa-box"></i>
+<span>My Orders</span>
+<i class="fa-solid fa-angle-right arrow"></i>
+</a>
+
+<a href="#">
+<i class="fa-solid fa-location-dot"></i>
+<span>Saved Address</span>
+<i class="fa-solid fa-angle-right arrow"></i>
+</a>
+
+<a href="#">
+<i class="fa-regular fa-heart"></i>
+<span>Wishlist</span>
+<i class="fa-solid fa-angle-right arrow"></i>
+</a>
+
+<a href="{% url 'logout' %}" class="logout">
+<i class="fa-solid fa-right-from-bracket"></i>
+<span>Logout</span>
+</a>
+
+</div>
+
+<a href="{% url 'home' %}" class="back">← Back to Home</a>
+
+</div>
+</div>
+
+</body>
+</html>

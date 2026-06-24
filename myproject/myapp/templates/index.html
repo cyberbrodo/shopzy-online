@@ -31,9 +31,15 @@
 <i class="fa-solid fa-magnifying-glass nav-icon" id="searchBtn"></i>
 </div>
 
-<a href="#">
-<i class="fa-regular fa-user nav-icon"></i>
+{% if request.user.is_authenticated %}
+<a href="{% url 'profile' %}">
+    <i class="fa-regular fa-user nav-icon"></i>
 </a>
+{% else %}
+<a href="{% url 'send_otp' %}">
+    <i class="fa-regular fa-user nav-icon"></i>
+</a>
+{% endif %}
 
 <a href="{% url 'cart' %}">
 <i class="fa-solid fa-cart-shopping nav-icon"></i>

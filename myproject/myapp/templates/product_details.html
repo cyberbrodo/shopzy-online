@@ -22,7 +22,7 @@
 </a>
 
 <div class="right-side d-flex align-items-center gap-4">
-<a href="{% url 'home' %}"><i class="fa-solid fa-magnifying-glass nav-icon"></i></a>
+<a href="{% url 'home' %}"><i class="fa-solid fa-house nav-icon"></i></a>
 <a href="#"><i class="fa-regular fa-user nav-icon"></i></a>
 <a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping nav-icon"></i></a>
 <a href="https://wa.me/919037078132" target="_blank">
@@ -63,7 +63,18 @@
 <button class="buy-btn">Add to Cart</button>
 </a>
 
+
+
 <hr>
+
+        <div class="colors">
+{% for variant in product.variants.all %}
+<label>
+<input type="radio" name="variant" value="{{ variant.id }}">
+{{ variant.color }}
+</label>
+{% endfor %}
+</div>
 
 <div class="description">
 {{ product.description|linebreaks }}
@@ -75,10 +86,95 @@
 
 <div class="reviews">
 <h2>Reviews and Ratings</h2>
-<div class="stars">★★★★★</div>
+
+{% if reviews %}
+{% for review in reviews %}
+
+<div class="single-review">
+
+<h4>{{ review.name }}</h4>
+
+<div class="stars">
+{% for i in "12345" %}
+{% if forloop.counter <= review.rating %}
+<span class="filled-star">★</span>
+{% else %}
+<span class="empty-star">★</span>
+{% endif %}
+{% endfor %}
+</div>
+
+{% if review.title %}
+<h5>{{ review.title }}</h5>
+{% endif %}
+
+<p>{{ review.comment }}</p>
+
+{% if review.image %}
+<img src="{{ review.image.url }}" class="review-img">
+{% endif %}
+
+</div>
+
+{% endfor %}
+{% else %}
+
+<div class="stars">
+<span class="empty-star">★</span>
+<span class="empty-star">★</span>
+<span class="empty-star">★</span>
+<span class="empty-star">★</span>
+<span class="empty-star">★</span>
+</div>
+
 <h3>No Customer Reviews</h3>
 <p>Share your thoughts with other customers</p>
-<button>Write A Review</button>
+
+{% endif %}
+
+<button onclick="openReviewModal()" class="review-btn">Write A Review</button>
+</div>
+
+<div class="review-modal" id="reviewModal">
+
+<div class="review-left">
+<img src="{{ product.image.url }}" alt="{{ product.name }}">
+</div>
+
+<div class="review-right">
+
+<button class="close-btn" onclick="closeReviewModal()">×</button>
+
+<h2>Write A Review</h2>
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<label>Overall Rating <span>*</span></label>
+<select name="rating" required>
+<option value="5">★★★★★ 5 Star</option>
+<option value="4">★★★★ 4 Star</option>
+<option value="3">★★★ 3 Star</option>
+<option value="2">★★ 2 Star</option>
+<option value="1">★ 1 Star</option>
+</select>
+
+<label>Your Name <span>*</span></label>
+<input type="text" name="name" placeholder="Your name" required>
+
+<label>Title</label>
+<input type="text" name="title" placeholder="Type your review title">
+
+<label>Description <span>*</span></label>
+<textarea name="comment" placeholder="Please write your review" required></textarea>
+
+<label>Images</label>
+<input type="file" name="image">
+
+<button type="submit" class="submit-review">Submit Review</button>
+
+</form>
+</div>
 </div>
 
 <footer class="footer">
@@ -88,6 +184,14 @@
 <script>
 function changeImage(src){
 document.getElementById("mainProductImage").src = src;
+}
+
+function openReviewModal(){
+document.getElementById("reviewModal").style.display = "grid";
+}
+
+function closeReviewModal(){
+document.getElementById("reviewModal").style.display = "none";
 }
 </script>
 

@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Orders</title>
+<link rel="stylesheet" href="{% static 'css/my_orders.css' %}">
+</head>
+<body>
+
+<div class="orders-page">
+
+<h2>My Orders</h2>
+
+{% for order in orders %}
+
+<div class="order-card">
+<div class="order-top">
+<h3>Order #{{ order.id }}</h3>
+<span>{{ order.order_status }}</span>
+</div>
+
+<p>Total: ₹{{ order.total }}</p>
+<p>Date: {{ order.created_at|date:"d M Y" }}</p>
+
+{% for item in order.items.all %}
+<div class="order-item">
+<img src="{{ item.product_image }}" alt="{{ item.product_name }}">
+<div>
+<h4>{{ item.product_name }}</h4>
+<p>Qty: {{ item.quantity }}</p>
+<p>₹{{ item.total }}</p>
+</div>
+</div>
+{% endfor %}
+
+</div>
+
+{% empty %}
+<h3>No orders yet</h3>
+{% endfor %}
+
+<a href="{% url 'profile' %}" class="back">← Back to Profile</a>
+
+</div>
+
+</body>
+</html>
