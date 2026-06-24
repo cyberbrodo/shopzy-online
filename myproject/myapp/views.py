@@ -147,23 +147,28 @@ def decrease_quantity(request, id):
 def checkout(request):
     cart = request.session.get('cart', {})
 
+    if not cart:
+        return redirect('cart')
+
     cart_items = []
     total = 0
 
     for product_id, item in cart.items():
-        item_total = item['price'] * item['quantity']
+        price = int(item['price'])
+        quantity = int(item['quantity'])
+        item_total = price * quantity
         total += item_total
 
         cart_items.append({
             'id': product_id,
             'name': item['name'],
-            'price': item['price'],
+            'price': price,
             'image': item['image'],
-            'quantity': item['quantity'],
+            'quantity': quantity,
             'total': item_total
         })
 
-    amount = total * 100
+    amount = int(total * 100)
 
     client = razorpay.Client(
         auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
